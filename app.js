@@ -20,7 +20,7 @@ if (command === 'add') {
     var note = notes.addNote(argv.title, argv.body);
     if (note) {
         console.log('Note created:');
-        console.log(note);
+        console.log(notes.formatNote(note));
     } else {
         // no note returned
         console.log('Couldn\'t create note with title:', argv.title);
@@ -32,7 +32,13 @@ if (command === 'add') {
     var message = removedNote ? `Note ${argv.title} removed successfully.` : `Note ${argv.title} not found.`;
     console.log(message);
 } else if (command === 'read') {
-    notes.getNote(argv.title);
+    var selectedNote = notes.getNote(argv.title);
+    if (selectedNote) {
+        console.log('Note retrieved:');
+        console.log(notes.formatNote(selectedNote));
+    } else {
+        console.log(`Couldn't find note with title ${argv.title}.`);
+    }
 } else {
     // unable to determine the correct command
     console.log('Command not recogenized.  Print help.');

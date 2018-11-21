@@ -47,12 +47,27 @@ var removeNote = (title) => {
 }
 
 var getNote = (title) => {
-    console.log('Reading note:\n', '  title: ', title);
+    // fetch notes
+    var notes = fetechNotes();
+
+    // filter to the note we want
+    var selectedNotes = notes.filter( (note) => note.title === title);
+
+    // return the first note in the filtered note array (the one we want)
+    return selectedNotes[0];
+}
+
+var formatNote = (note) => {
+    var formattedNote = "--\n";
+    formattedNote += `Title: ${note.title}\n`;
+    formattedNote += `Body: ${note.body}\n`;
+    return formattedNote;
 }
 
 module.exports = {
     addNote,
     getAll,
     removeNote,
-    getNote
+    getNote,
+    formatNote
 };
