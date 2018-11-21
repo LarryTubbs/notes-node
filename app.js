@@ -4,7 +4,32 @@ const yargs = require('yargs');
 
 const notes = require('./notes');
 
-const argv = yargs.argv;
+const titleOptions = {
+    describe: 'The title you want for the note.  This should be unique.',
+    demand: true,
+    alias: 't'
+};
+
+const bodyOptions = {
+    describe: 'The body you want for the note.',
+    demand: true,
+    alias: 'b'
+}
+
+const argv = yargs
+    .command('add', 'Add a new note.', {
+        title: titleOptions,
+        body: bodyOptions
+    })
+    .command('list', 'List all notes.')
+    .command('read', 'Display a single note by title.', {
+        title: titleOptions
+    })
+    .command('remove', 'Remove a note by title.', {
+        title: titleOptions
+    })
+    .help()
+    .argv;
 
 // parse out the command
 var command = argv._[0];
@@ -22,6 +47,7 @@ if (command === 'add') {
 } else if (command === 'list') {
     var allNotes = notes.getAll();
     if (allNotes) {
+        console.log(`Displaying ${allNotes.length} notes`)
         allNotes.forEach( (element) => console.log(notes.formatNote(element)));
     } else {
         console.log("No notes found.");
@@ -40,5 +66,5 @@ if (command === 'add') {
     }
 } else {
     // unable to determine the correct command
-    console.log('Command not recogenized.  Print help.');
+    console.log('Command not recogenized.  Try node app.js --help.');
 }
