@@ -5,27 +5,27 @@ const yargs = require('yargs');
 const notes = require('./notes');
 
 const titleOptions = {
-    describe: 'The title you want for the note.  This should be unique.',
+    describe: 'The note title.',
     demand: true,
     alias: 't'
 };
 
 const bodyOptions = {
-    describe: 'The body you want for the note.',
+    describe: 'The note body.',
     demand: true,
     alias: 'b'
 }
 
 const argv = yargs
-    .command('add', 'Add a new note.', {
+    .command(['add', 'a'], 'Add a new note.', {
         title: titleOptions,
         body: bodyOptions
     })
-    .command('list', 'List all notes.')
-    .command('read', 'Display a single note by title.', {
+    .command(['list', 'l'], 'List all notes.')
+    .command(['read', 'r'], 'Display a single note by title.', {
         title: titleOptions
     })
-    .command('remove', 'Remove a note by title.', {
+    .command(['delete', 'd'], 'Delete a note by title.', {
         title: titleOptions
     })
     .help()
@@ -35,7 +35,7 @@ const argv = yargs
 var command = argv._[0];
 
 // execute the command
-if (command === 'add') {
+if (command === 'add' || command === 'a') {
     var note = notes.addNote(argv.title, argv.body);
     if (note) {
         console.log('Note created:');
@@ -44,7 +44,7 @@ if (command === 'add') {
         // no note returned
         console.log('Couldn\'t create note with title:', argv.title);
     }
-} else if (command === 'list') {
+} else if (command === 'list' || command === 'l') {
     var allNotes = notes.getAll();
     if (allNotes) {
         console.log(`Displaying ${allNotes.length} notes`)
@@ -52,11 +52,11 @@ if (command === 'add') {
     } else {
         console.log("No notes found.");
     }
-} else if (command === 'remove') {
+} else if (command === 'delete' || command === 'd') {
     var removedNote = notes.removeNote(argv.title);
-    var message = removedNote ? `Note ${argv.title} removed successfully.` : `Note ${argv.title} not found.`;
+    var message = removedNote ? `Note ${argv.title} deleted successfully.` : `Note ${argv.title} not found.`;
     console.log(message);
-} else if (command === 'read') {
+} else if (command === 'read' || command === 'r') {
     var selectedNote = notes.getNote(argv.title);
     if (selectedNote) {
         console.log('Note retrieved:');
